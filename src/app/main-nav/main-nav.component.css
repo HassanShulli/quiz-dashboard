@@ -1,0 +1,33 @@
+.theme {
+  color: #259FD9 !important;
+  background-color: #2F3139 !important;
+}
+
+.title {
+  height: 66px;
+}
+
+.active-list-item {
+  color: white !important;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenavnone {
+  display: none;
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+}
+
+.index {
+  z-index: 2;
+}

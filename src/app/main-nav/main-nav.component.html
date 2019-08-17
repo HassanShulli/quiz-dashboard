@@ -1,0 +1,31 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer  class="theme fixed" fixedInViewport="true"
+
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="!(isHandset$ | async)">
+    <mat-toolbar  class="theme title">Abby's Café</mat-toolbar>
+    <mat-nav-list>
+
+      <a class="list-item" disableRipple class="theme" mat-list-item matLine routerLink='/reporting' routerLinkActive="active-list-item"><mat-icon>bar_chart</mat-icon>Summary</a>
+      <a class="list-item" disableRipple class="theme" mat-list-item matLine routerLink='/tables' routerLinkActive="active-list-item"><mat-icon>view_module</mat-icon>Tables</a>
+      <a class="list-item" disableRipple class="theme" mat-list-item matLine routerLink='/items' routerLinkActive="active-list-item"><mat-icon>list</mat-icon>Items</a>
+      <a class="list-item" disableRipple class="theme" mat-list-item matLine routerLink='/pos' routerLinkActive="active-list-item"><mat-icon>shopping_cart</mat-icon>Point of Sale</a>
+      <a class="list-item" disableRipple class="theme" mat-list-item matLine routerLink='/orders' routerLinkActive="active-list-item"><mat-icon>list_alt</mat-icon>Orders</a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="theme fixed index">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+    </mat-toolbar>
+    <!-- Content -->
+<!--    <router-outlet></router-outlet>-->
+  </mat-sidenav-content>
+</mat-sidenav-container>
