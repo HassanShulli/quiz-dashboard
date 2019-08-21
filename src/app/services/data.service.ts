@@ -21,7 +21,36 @@ export class DataService {
     this.headers = this.headers.append(header, content);
   }
 
-  // Items
+  // Quiz
+
+  getQuizzes(pageIndex, limit): Observable<any> {
+    this.appendHeader('Content-Type', 'application/json');
+    return this.http.request('get', `${apiURL}quiz/read?pageIndex=${pageIndex}&limit=${limit}`, {headers: this.headers})
+      .pipe(
+        tap(result => {
+        }),
+        catchError(this.handleError('getQuizAll()'))
+      );
+  }
+
+  createQuiz(newQuiz): Observable<any> {
+    return this.http.post(`${apiURL}quiz/create`, newQuiz)
+      .pipe(
+        tap(result => {
+        }),
+        catchError(this.handleError('createQuiz()'))
+      );
+  }
+
+  updateQuiz(newQuiz): Observable<any> {
+    return this.http.put(`${apiURL}quiz/update`, newQuiz)
+      .pipe(
+        tap(result => {
+        }),
+        catchError(this.handleError('updateQuiz()'))
+      );
+  }
+  // Question
 
   getQuestions(pageIndex, limit): Observable<any> {
     this.appendHeader('Content-Type', 'application/json');
@@ -41,6 +70,7 @@ export class DataService {
         catchError(this.handleError('createQuestion()'))
       );
   }
+
   // updateApp(app): Observable<any> {
   //   return this.http.put(`${apiUrl}/app/${app._id}`, app, {headers: this.headers})
   //     .pipe(
@@ -50,15 +80,15 @@ export class DataService {
   //     );
   // }
 
-
   updateQuestion(newQuestion): Observable<any> {
     return this.http.put(`${apiURL}questions/update`, newQuestion)
       .pipe(
         tap(result => {
         }),
-        catchError(this.handleError('updateItem()'))
+        catchError(this.handleError('updateQuestion()'))
       );
   }
+
   // updateQuestion(newQuestion): Observable<any> {
   //   // this.appendHeader('Content-Type', 'application/json');
   //   return this.http.post(`${apiURL}questions/update`, newQuestion)

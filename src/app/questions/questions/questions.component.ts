@@ -13,23 +13,32 @@ export class QuestionsComponent implements OnInit {
   table: any = {};
   questionDataSource: any;
   questions: any;
+  quizDataSource: any;
+  quizzes: any;
   newQuestion: any;
+  newQuiz: any;
   state: string;
   allOptions: string[];
   filteredQuestions: any;
+  filteredQuizzes: any;
+  quizTab: any;
+  questionsTab: any;
 
   questionColumns: string[] = ['createdAt', 'question', 'options', 'actions'];
+  quizColumns: string[] = ['createdAt', 'name', 'questions', 'actions'];
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   constructor(private dataService: DataService) {
   }
 
   ngOnInit() {
+    this.questionsTab = 'tab-active';
+    this.quizTab = 'tab-inactive';
     this.allOptions = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    this.initData();
+    this.initQuestionsData();
   }
 
-  initData() {
+  initQuestionsData() {
     this.getQuestions(0, 10);
     this.state = 'getQuestions';
     this.newQuestion = {
@@ -44,6 +53,15 @@ export class QuestionsComponent implements OnInit {
     };
   }
 
+  initQuizData() {
+    this.getQuizzes(0, 10);
+    this.state = 'getQuizzes';
+    this.newQuiz = {
+      name: '',
+      questions: []
+    };
+  }
+
   initPaginator(pageIndex, pageSize, length) {
     this.table.pageIndex = pageIndex;
     this.table.pageSize = pageSize;
@@ -54,13 +72,13 @@ export class QuestionsComponent implements OnInit {
     this.getQuestions(evt.pageIndex, evt.pageSize);
   }
 
-  filterTable(input) {
+  filterQuestionsTable(input) {
     this.filteredQuestions = [];
 
     for (const h of this.questions) {
       const keys = Object.keys(h);
       for (const key of keys) {
-        if (key === 'created' || key === 'question') {
+        if (key === 'createdAt' || key === 'question') {
           if (h[key].toUpperCase().includes(input.toUpperCase())) {
             this.filteredQuestions.push(h);
             break;
@@ -79,8 +97,43 @@ export class QuestionsComponent implements OnInit {
     this.questionDataSource = new MatTableDataSource(this.filteredQuestions);
   }
 
+  filterQuizzesTable(input) {
+    this.filteredQuizzes = [];
+
+    for (const h of this.quizzes) {
+      const keys = Object.keys(h);
+      for (const key of keys) {
+        if (key === 'createdAt' || key === 'name') {
+          if (h[key].toUpperCase().includes(input.toUpperCase())) {
+            this.filteredQuizzes.push(h);
+            break;
+          }
+        } else if (key === 'questions') {
+          for (const quiz of h[key]) {
+            if (quiz.question.toUpperCase().includes(input.toUpperCase())) {
+              this.filteredQuizzes.push(h);
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    this.quizDataSource = new MatTableDataSource(this.filteredQuizzes);
+  }
+
   switchState(s) {
     this.state = s;
+  }
+
+  getQuizzes(pageIndex, limit) {
+    this.dataService.getQuizzes(pageIndex, limit)
+      .subscribe(result => {
+        this.quizzes = result.docs;
+        this.quizDataSource = new MatTableDataSource(result.docs);
+        this.initPaginator(result.pagination.page, result.pagination.limit, result.pagination.total);
+        console.log('this.quizzes : ', this.quizzes);
+      });
   }
 
   getQuestions(pageIndex, limit) {
@@ -89,6 +142,7 @@ export class QuestionsComponent implements OnInit {
         this.questions = result.docs;
         this.questionDataSource = new MatTableDataSource(result.docs);
         this.initPaginator(result.pagination.page, result.pagination.limit, result.pagination.total);
+        console.log('this.questions : ', this.questions);
       });
   }
 
@@ -99,7 +153,6 @@ export class QuestionsComponent implements OnInit {
         alert('Please fill out all the options!');
         break;
       }
-
 
       if (i === this.newQuestion.options.length - 1) {
         console.log('this.newQuestion : ', this.newQuestion);
@@ -115,18 +168,18 @@ export class QuestionsComponent implements OnInit {
               .subscribe(result => {
                 if (result) {
                   console.log('result : ', result);
-                  this.initData();
+                  this.initQuestionsData();
                 }
               }, err => {
                 alert('An error occurred');
-                this.initData();
+                this.initQuestionsData();
               });
           } else if (this.state === 'editQuestion') {
             this.dataService.updateQuestion(this.newQuestion)
               .subscribe(result => {
                 if (result) {
                   console.log('result edit successful : ', result);
-                  this.initData();
+                  this.initQuestionsData();
                 }
               }, err => {
                 alert('An error occurred!');
@@ -134,9 +187,50 @@ export class QuestionsComponent implements OnInit {
           }
         }
       }
-
     }
+  }
 
+  createQuiz() {
+    console.log('HERE CREATE QUIZ : ', this.newQuiz);
+    console.log('this.state : ', this.state);
+    if (this.newQuiz.name === '' || this.newQuiz.name === undefined || this.newQuiz.name === null) {
+      alert('Please Insert Name Of The Quiz!');
+    } else if (this.newQuiz.questions.length === 0) {
+      alert('Please Select A Question!');
+    } else {
+      console.log('HEREEEEEEEEEE');
+      if (this.state === 'addQuiz') {
+        this.dataService.createQuiz(this.newQuiz)
+          .subscribe(result => {
+            console.log('result created Quiz: ', result);
+            this.initQuizData();
+          }, err => {
+            alert('An error occurred!');
+          });
+      } else if (this.state === 'editQuiz') {
+        this.dataService.updateQuiz(this.newQuiz)
+          .subscribe(result => {
+            console.log('result updaetd QUIZ : ', result);
+            this.initQuizData();
+          }, err => {
+            alert('An error occurred!');
+          });
+      }
+    }
+  }
+
+  switchTab(clickedTab) {
+    if (clickedTab === 'quizTab') {
+      this.quizTab = 'tab-active';
+      this.questionsTab = 'tab-inactive';
+      this.state = 'getQuizzes';
+      this.getQuizzes(0, 10);
+    } else if (clickedTab === 'questionsTab') {
+      this.quizTab = 'tab-inactive';
+      this.questionsTab = 'tab-active';
+      this.state = 'getQuestions';
+      this.getQuestions(0, 10);
+    }
   }
 
   deleteQuestion(questionId) {
@@ -146,6 +240,20 @@ export class QuestionsComponent implements OnInit {
         .subscribe(result => {
           if (result) {
             this.getQuestions(this.table.pageIndex, this.table.pageSize);
+          }
+        }, err => {
+          alert('An error occurred!');
+        });
+    }
+  }
+
+  deleteQuiz(quizId) {
+    console.log('quizId : ', quizId);
+    if (confirm('Are you sure you want to delete ?')) {
+      this.dataService.deleteQuiz(quizId)
+        .subscribe(result => {
+          if (result) {
+            this.getQuizzes(this.table.pageIndex, this.table.pageSize);
           }
         }, err => {
           alert('An error occurred!');
@@ -166,10 +274,39 @@ export class QuestionsComponent implements OnInit {
     };
   }
 
+  addQuiz() {
+    this.initQuizData();
+    this.getQuestions(0, 100);
+  }
+
   editQuestion(question) {
-    console.log('question : ', question);
     this.newQuestion = question;
-    console.log('this.newQuestion : ', this.newQuestion);
+  }
+
+  editQuiz(quiz) {
+    this.newQuiz = quiz;
+    const selected = quiz.questions;
+    this.newQuiz.questions = [];
+    for (let i = 0; i < selected.length; i++) {
+      for (let j = 0; j < this.questions.length; j++) {
+        if (selected[i]._id === this.questions[j]._id) {
+          console.log('this.newQuiz.questions : ', this.newQuiz.questions);
+          this.newQuiz.questions.push(this.questions[j]);
+        }
+      }
+
+    }
+    console.log('this.newQuiz : ', this.newQuiz);
+  }
+
+  selectAllQuestions() {
+    this.newQuiz.questions = this.questions;
+    console.log('this.newQuiz.questions : ', this.newQuiz.questions);
+  }
+
+  deselectAllQuestions() {
+    this.newQuiz.questions = [];
+    console.log('this.newQuiz.questions : ', this.newQuiz.questions);
   }
 
   deleteOption(optionForDelete, itemIndex) {

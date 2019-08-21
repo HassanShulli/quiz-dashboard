@@ -104,3 +104,24 @@ td {
   align-items: center;
   color: #F26762;
 }
+
+.tab-inactive {
+  cursor: pointer;
+  background-color: #d3dfdf;
+}
+
+.tab-active {
+  background-color: #919595;
+}
+
+.tab-div {
+  display: inline-block;
+  width: 140px;
+  height: 40px;
+  text-align: center;
+  line-height: 42px;
+}
+
+.display {
+  display: inline-block;
+}
