@@ -3,10 +3,10 @@
   <div *ngIf="state === 'getQuestions' || state === 'getQuizzes'">
     <div class="center-text">
       <div class="tab-div" (click)="switchTab('questionsTab')" [ngClass]="questionsTab">
-        <label class="tab-label">Questions</label>
+        <label [ngClass]="questionsLabel" class="tab-label">Questions</label>
       </div>
       <div class="tab-div" (click)="switchTab('quizTab')" [ngClass]="quizTab">
-        <label class="tab-label">Quiz</label>
+        <label [ngClass]="quizLabel" >Quiz</label>
       </div>
     </div>
   </div>

@@ -23,6 +23,8 @@ export class QuestionsComponent implements OnInit {
   filteredQuizzes: any;
   quizTab: any;
   questionsTab: any;
+  questionsLabel: any;
+  quizLabel: any;
 
   questionColumns: string[] = ['createdAt', 'question', 'options', 'actions'];
   quizColumns: string[] = ['createdAt', 'name', 'questions', 'actions'];
@@ -34,6 +36,8 @@ export class QuestionsComponent implements OnInit {
   ngOnInit() {
     this.questionsTab = 'tab-active';
     this.quizTab = 'tab-inactive';
+    this.questionsLabel = 'tab-label-active';
+    this.quizLabel = 'tab-label-inactive';
     this.allOptions = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     this.initQuestionsData();
   }
@@ -191,23 +195,21 @@ export class QuestionsComponent implements OnInit {
   }
 
   createQuiz() {
-    console.log('HERE CREATE QUIZ : ', this.newQuiz);
-    console.log('this.state : ', this.state);
     if (this.newQuiz.name === '' || this.newQuiz.name === undefined || this.newQuiz.name === null) {
       alert('Please Insert Name Of The Quiz!');
     } else if (this.newQuiz.questions.length === 0) {
       alert('Please Select A Question!');
     } else {
-      console.log('HEREEEEEEEEEE');
       if (this.state === 'addQuiz') {
         this.dataService.createQuiz(this.newQuiz)
           .subscribe(result => {
-            console.log('result created Quiz: ', result);
             this.initQuizData();
           }, err => {
             alert('An error occurred!');
           });
       } else if (this.state === 'editQuiz') {
+        console.log('This.newQuiz : ', this.newQuiz);
+
         this.dataService.updateQuiz(this.newQuiz)
           .subscribe(result => {
             console.log('result updaetd QUIZ : ', result);
@@ -224,10 +226,14 @@ export class QuestionsComponent implements OnInit {
       this.quizTab = 'tab-active';
       this.questionsTab = 'tab-inactive';
       this.state = 'getQuizzes';
+      this.questionsLabel = 'tab-label-active';
+      this.quizLabel = 'tab-label-inactive';
       this.getQuizzes(0, 10);
     } else if (clickedTab === 'questionsTab') {
       this.quizTab = 'tab-inactive';
       this.questionsTab = 'tab-active';
+      this.questionsLabel = 'tab-label-active';
+      this.quizLabel = 'tab-label-inactive';
       this.state = 'getQuestions';
       this.getQuestions(0, 10);
     }

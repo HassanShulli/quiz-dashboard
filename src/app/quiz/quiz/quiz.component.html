@@ -1,1 +1,43 @@
-<p>quiz works!</p>
+<div style="height: 65px;"></div>
+
+<div class="flex-container">
+  <div *ngFor="let quiz of quizAll">
+    <mat-card style="height: 11em;">
+      <mat-card-header style="height: 8em;">
+              <mat-card-title>{{ (quiz.name.length > 70)? (quiz.name | slice:0:65):(quiz.name)}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-footer style="height: 3em;">
+        No. Of Questions : {{quiz.questions.length}}
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>
+
+<!--  <div *ngIf="memberAddDetailsState === 'preferencesAdd' && state !== 'membersView'">-->
+<!--    <div class="member-preferences-container" style="width: 50%;padding: 15px 25%">-->
+<!--      <div style="width: 50%;text-align: center;display: inline-block;padding-bottom: 10px;"-->
+<!--           *ngFor="let pref of memberPreferences let k = index" [attr.data-index]="k">-->
+<!--        <div style="display: inline-block;width: 25%;"></div>-->
+<!--        <div style="display: inline-block;width: 25%;text-align: left;min-width: 200px;margin-bottom: 10px;">-->
+<!--          <label>{{pref.preference.question}}</label>-->
+<!--          <div *ngFor="let opt of pref.preference.options let j = index" [attr.data-index]="j"-->
+<!--               style="text-align: left;">-->
+
+<!--            <mat-checkbox-->
+<!--              [value]="memberPreferences[k].answers[j]"-->
+<!--              [(ngModel)]="memberPreferences[k].answers[j]">-->
+<!--              {{pref.preference.options[j]}}-->
+<!--            </mat-checkbox>-->
+
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div style="text-align: center;">-->
+<!--      <button style="background-color: #E74C3C;color: white;width: 130px;margin-top: 10px;height: 44px;"-->
+<!--              mat-button type="submit"-->
+<!--              (click)="submitPreferences(memberPreferences);">-->
+<!--        Submit-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->

@@ -114,6 +114,17 @@ td {
   background-color: #919595;
 }
 
+.tab-label-inactive {
+  line-height: 1.5;
+  vertical-align: center;
+  cursor: pointer;
+}
+
+.tab-label-active {
+  line-height: 1.5;
+  vertical-align: center;
+}
+
 .tab-div {
   display: inline-block;
   width: 140px;

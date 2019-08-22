@@ -50,6 +50,15 @@ export class DataService {
         catchError(this.handleError('updateQuiz()'))
       );
   }
+
+  deleteQuiz(id): Observable<any> {
+    return this.http.delete(`${apiURL}quiz/delete/${id}`)
+      .pipe(
+        tap(result => {
+        }),
+        catchError(this.handleError('deleteQuiz()'))
+      );
+  }
   // Question
 
   getQuestions(pageIndex, limit): Observable<any> {
@@ -99,12 +108,13 @@ export class DataService {
   //     );
   // }
 
+
   deleteQuestion(id): Observable<any> {
     return this.http.delete(`${apiURL}questions/delete/${id}`)
       .pipe(
         tap(result => {
         }),
-        catchError(this.handleError('createQuestion()'))
+        catchError(this.handleError('deleteQuestion()'))
       );
   }
 

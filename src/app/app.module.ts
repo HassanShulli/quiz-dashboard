@@ -27,13 +27,11 @@ import {
 import {LayoutModule} from '@angular/cdk/layout';
 import {ChartsModule} from 'ng2-charts';
 import { MainNavComponent } from './main-nav/main-nav.component';
-import { ReportingComponent } from './reporting/reporting/reporting.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainNavComponent,
-    ReportingComponent
+    MainNavComponent
   ],
   imports: [
     BrowserModule,
