@@ -59,6 +59,38 @@ export class DataService {
         catchError(this.handleError('deleteQuiz()'))
       );
   }
+
+  // Counter
+
+  updateCount(body): Observable<any> {
+    return this.http.put(`${apiURL}counter/update`, body)
+      .pipe(
+        tap(result => {
+        }),
+        catchError(this.handleError('updateQuiz()'))
+      );
+  }
+
+  // Counter
+
+  getCounters(): Observable<any> {
+    return this.http.get(`${apiURL}counter/read`)
+      .pipe(
+        tap(result => {
+        }),
+        catchError(this.handleError('getCounters()'))
+      );
+  }
+
+  getCounter(id): Observable<any> {
+    return this.http.get(`${apiURL}counter/read/${id}`)
+      .pipe(
+        tap(result => {
+        }),
+        catchError(this.handleError('getCounter()'))
+      );
+  }
+
   // Question
 
   getQuestions(pageIndex, limit): Observable<any> {

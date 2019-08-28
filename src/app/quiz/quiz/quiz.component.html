@@ -1,10 +1,10 @@
 <div style="height: 65px;"></div>
 
-<div class="flex-container">
+<div class="flex-container" *ngIf="state === 'readQuiz'">
   <div *ngFor="let quiz of quizAll">
-    <mat-card style="height: 11em;">
+    <mat-card class="card" (click)="takeQuiz(quiz);">
       <mat-card-header style="height: 8em;">
-              <mat-card-title>{{ (quiz.name.length > 70)? (quiz.name | slice:0:65):(quiz.name)}}</mat-card-title>
+        <mat-card-title>{{ (quiz.name.length > 70) ? (quiz.name | slice:0:65) : (quiz.name)}}</mat-card-title>
       </mat-card-header>
       <mat-card-footer style="height: 3em;">
         No. Of Questions : {{quiz.questions.length}}
@@ -13,31 +13,55 @@
   </div>
 </div>
 
-<!--  <div *ngIf="memberAddDetailsState === 'preferencesAdd' && state !== 'membersView'">-->
-<!--    <div class="member-preferences-container" style="width: 50%;padding: 15px 25%">-->
-<!--      <div style="width: 50%;text-align: center;display: inline-block;padding-bottom: 10px;"-->
-<!--           *ngFor="let pref of memberPreferences let k = index" [attr.data-index]="k">-->
-<!--        <div style="display: inline-block;width: 25%;"></div>-->
-<!--        <div style="display: inline-block;width: 25%;text-align: left;min-width: 200px;margin-bottom: 10px;">-->
-<!--          <label>{{pref.preference.question}}</label>-->
-<!--          <div *ngFor="let opt of pref.preference.options let j = index" [attr.data-index]="j"-->
-<!--               style="text-align: left;">-->
 
-<!--            <mat-checkbox-->
-<!--              [value]="memberPreferences[k].answers[j]"-->
-<!--              [(ngModel)]="memberPreferences[k].answers[j]">-->
-<!--              {{pref.preference.options[j]}}-->
-<!--            </mat-checkbox>-->
+<div *ngIf="state === 'takeQuiz'">
 
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div style="text-align: center;">-->
-<!--      <button style="background-color: #E74C3C;color: white;width: 130px;margin-top: 10px;height: 44px;"-->
-<!--              mat-button type="submit"-->
-<!--              (click)="submitPreferences(memberPreferences);">-->
-<!--        Submit-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
+  <div style="height: 50px;text-align: left;">
+    <button
+      style="height: 40px;line-height: 1.5;display: inline-block;vertical-align: middle;background-color: #E74C3C;color: white;width: 130px;float: left;margin-top: 5px;margin-left: 10px;"
+      mat-button (click)="switchState('readQuiz');back();">
+      <label class="button-label">Back</label>
+    </button>
+  </div>
+
+  <div *ngFor="let question of currentQuiz.questions let k = index" [attr.data-index]="k">
+
+    <div style="text-align: center;padding: 10px;">{{question.question}}</div>
+    <div *ngIf="mode === 'markQuiz'" style="text-align: right;padding-right: 25%;">
+      <mat-icon [hidden]="question.givenAnswer !== question.correctAnswer" style="color: green;">check</mat-icon>
+      <mat-icon [hidden]="question.givenAnswer === question.correctAnswer" style="color: red;">close</mat-icon>
+    </div>
+
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="question.givenAnswer" [disabled]="mode === 'markQuiz'"
+                     (click)="printSelected(question)">
+      <div *ngFor="let option of question.options let j = index" [attr.data-index]="j">
+        <div style="text-align: left;width: 50%;padding: 10px 0 10px 25%;min-width: 400px;">
+          <mat-radio-button
+            value="{{option.label}}">
+            {{option.name}}
+
+          </mat-radio-button>
+        </div>
+      </div>
+    </mat-radio-group>
+
+  </div>
+
+  <div *ngIf="mode === 'markQuiz'" style="text-align: center;font-size: 30px;">Score : {{score}}
+    /{{currentQuiz.questions.length}}</div>
+
+  <div style="text-align: center;padding: 15px;">
+    <button *ngIf="mode === 'default'"
+            style="height: 40px;line-height: 1.5;display: inline-block;vertical-align: middle;background-color: #E74C3C;color: white;width: 130px;"
+            mat-button (click)="submitQuiz();">
+      <label class="button-label">Mark Quiz</label>
+    </button>
+
+    <button *ngIf="mode === 'markQuiz'"
+            style="height: 40px;line-height: 1.5;display: inline-block;vertical-align: middle;background-color: #E74C3C;color: white;width: 130px;"
+            mat-button (click)="restartQuiz();">
+      <label class="button-label">Restart</label>
+    </button>
+  </div>
+
+</div>

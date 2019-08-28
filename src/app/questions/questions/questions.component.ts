@@ -133,8 +133,10 @@ export class QuestionsComponent implements OnInit {
   getQuizzes(pageIndex, limit) {
     this.dataService.getQuizzes(pageIndex, limit)
       .subscribe(result => {
-        this.quizzes = result.docs;
-        this.quizDataSource = new MatTableDataSource(result.docs);
+        console.log('result  get quizzes: ', result);
+        console.log('res.res: ', result.result);
+        this.quizzes = result.result;
+        this.quizDataSource = new MatTableDataSource(result.result);
         this.initPaginator(result.pagination.page, result.pagination.limit, result.pagination.total);
         console.log('this.quizzes : ', this.quizzes);
       });
@@ -151,6 +153,9 @@ export class QuestionsComponent implements OnInit {
   }
 
   submitNewQuestion() {
+    for (let i = 0; i < this.newQuestion.options.length; i++) {
+      this.newQuestion.options[i].label = this.allOptions[i];
+    }
     console.log('this.newQuestion submit: ', this.newQuestion);
     for (let i = 0; i < this.newQuestion.options.length; i++) {
       if (this.newQuestion.options[i].name === '') {

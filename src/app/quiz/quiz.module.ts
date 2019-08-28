@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { QuizRoutingModule } from './quiz-routing.module';
-import { QuizComponent } from './quiz/quiz.component';
+import {QuizRoutingModule} from './quiz-routing.module';
+import {QuizComponent} from './quiz/quiz.component';
 import {HttpClientModule} from '@angular/common/http';
 import {
   MatButtonModule,
@@ -15,7 +15,8 @@ import {
   MatDialogModule,
   MatRadioModule,
   MatSelectModule,
-  MatCardModule
+  MatCardModule,
+  MatCheckboxModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 
@@ -37,7 +38,9 @@ import {FormsModule} from '@angular/forms';
     MatDialogModule,
     MatRadioModule,
     MatSelectModule,
-    MatCardModule
+    MatCardModule,
+    MatCheckboxModule
   ]
 })
-export class QuizModule { }
+export class QuizModule {
+}

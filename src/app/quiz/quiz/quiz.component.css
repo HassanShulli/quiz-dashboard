@@ -9,3 +9,29 @@
   margin: 10px;
   text-align: center;
 }
+
+.card {
+  height: 11em;
+}
+
+.card:hover {
+  cursor: pointer;
+  height: 11em;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.button-label {
+  font-size: 16px;
+  font-weight: normal;
+  color: #FFFFFF;
+}
+
+.button-label:Hover {
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: normal;
+  color: #FFFFFF;
+}
