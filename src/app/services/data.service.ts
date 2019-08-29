@@ -3,8 +3,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 
-const apiURL = 'http://localhost:3000/'; // for local use
-// const apiURL = 'https://abbys-caffe-api.herokuapp.com/'; // for heroku deployment
+// const apiURL = 'http://localhost:3000/'; // for local use
+const apiURL = 'https://quiz-pro-quo-api.herokuapp.com/'; // for heroku deployment
 
 @Injectable({
   providedIn: 'root'

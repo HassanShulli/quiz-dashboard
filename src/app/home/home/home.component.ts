@@ -12,6 +12,13 @@ export class HomeComponent implements OnInit {
 
   public barChartOptions: ChartOptions = {
     responsive: true,
+    scales : {
+      yAxes: [{
+        ticks: {
+          max : 100
+        }
+      }]
+    }
   };
   public barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public barChartType: ChartType = 'bar';
@@ -35,7 +42,7 @@ export class HomeComponent implements OnInit {
     }];
 
   public barChartData: ChartDataSets[] = [
-    {data: [65, 0, 0, 0], label: 'Series A'}
+    {data: [65, 0, 0, 0], label: 'Average Score ( % )'}
   ];
 
   constructor(private dataService: DataService) {
@@ -46,29 +53,19 @@ export class HomeComponent implements OnInit {
   }
 
   initCounters() {
-    console.log('here');
     this.dataService.getCounters()
       .subscribe(response => {
         this.barChartData[0].data = [];
         const newData = [];
         const newLabel = [];
-        console.log('response.result : ', response.result);
-        console.log('response.result.length : ', response.result.length);
         for (let i = 0; i < response.result.length; i++) {
-
-          this.barChartData[0].data.push((response.result[i].total / response.result[i].count) * 100);
-          // this.barChartData[0].label.push((response.result[i].total / response.result[i].count) * 100);
-
-          console.log('here newData : ', newData);
+          this.barChartData[0].data.push(response.result[i].total / response.result[i].count);
           newData.push({
             data: [],
             label: response.result[i].quiz_id.name
           });
           newLabel.push(response.result[i].quiz_id.name);
-          // this.barChartData = newData;
           this.barChartLabels = newLabel;
-          console.log('this.barChartData : ', this.barChartData);
-          console.log('this.barChartLabels : ', this.barChartLabels);
           // }
         }
       });

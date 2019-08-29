@@ -1,61 +1,64 @@
 <div style="height: 65px;"></div>
 <div>
   <div *ngIf="state === 'getQuestions' || state === 'getQuizzes'">
-    <div class="center-text">
-      <div class="tab-div" (click)="switchTab('questionsTab')" [ngClass]="questionsTab">
-        <label [ngClass]="questionsLabel" class="tab-label">Questions</label>
-      </div>
-      <div class="tab-div" (click)="switchTab('quizTab')" [ngClass]="quizTab">
-        <label [ngClass]="quizLabel" >Quiz</label>
-      </div>
+
+    <div style="text-align: center;padding: 15px 0;">
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="switchTab($event.source.value)">
+        <mat-button-toggle value="questionsTab" style="width: 100px;">Questions</mat-button-toggle>
+        <mat-button-toggle value="quizTab" style="width: 100px;">Quiz</mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
   </div>
+
   <div *ngIf="state === 'getQuestions' || state === 'getQuizzes'">
 
     <div class="padding">
-      <div class="width-50 display">
-        <mat-form-field  *ngIf="state === 'getQuestions'">
+      <div class="search-div">
+        <mat-form-field *ngIf="state === 'getQuestions'">
           <input #search matInput placeholder="Order date, Table Number" (input)="filterQuestionsTable(search.value)"
                  autocomplete="off">
           <mat-icon matSuffix color="color">search</mat-icon>
         </mat-form-field>
 
-        <mat-form-field  *ngIf="state === 'getQuizzes'">
+        <mat-form-field *ngIf="state === 'getQuizzes'">
           <input #search matInput placeholder="quiz name, question" (input)="filterQuizzesTable(search.value)"
                  autocomplete="off">
           <mat-icon matSuffix color="color">search</mat-icon>
         </mat-form-field>
       </div>
-      <div class="display width-50 text-right">
+
+      <div class="button-div">
         <button *ngIf="state === 'getQuestions'"
-          style="height: 40px;line-height: 1.5;display: inline-block;vertical-align: middle;background-color: #E74C3C;color: white;width: 130px;margin-top: 5px;margin-left: 10px;"
-          mat-button (click)="addQuestion();switchState('addQuestions');">
+                class="add-button"
+                mat-button (click)="addQuestion();switchState('addQuestions');">
           <label class="button-label">Add</label>
         </button>
+
         <button *ngIf="state === 'getQuizzes'"
-          style="height: 40px;line-height: 1.5;display: inline-block;vertical-align: middle;background-color: #E74C3C;color: white;width: 130px;margin-top: 5px;margin-left: 10px;"
-          mat-button (click)="addQuiz();switchState('addQuiz');">
+                class="add-button"
+                mat-button (click)="addQuiz();switchState('addQuiz');">
           <label class="button-label">Add</label>
         </button>
       </div>
+
     </div>
 
 
     <div class="table-div" *ngIf="state === 'getQuizzes'">
       <table mat-table [dataSource]="quizDataSource" matSort class="mat-elevation-z0">
         <ng-container matColumnDef="createdAt">
-          <th class="center" mat-header-cell *matHeaderCellDef mat-sort-header>Created At</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Created At</th>
           <td mat-cell *matCellDef="let quiz"
               class="width-20">{{quiz.createdAt | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
         </ng-container>
 
         <ng-container matColumnDef="name">
-          <th class="center" mat-header-cell *matHeaderCellDef mat-sort-header>Question</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Question</th>
           <td mat-cell *matCellDef="let quiz" class="width-30">{{quiz.name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="questions">
-          <th class="center" mat-header-cell *matHeaderCellDef mat-sort-header>Questions</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Questions</th>
           <td mat-cell *matCellDef="let quiz" class="width-30">
             <label *ngFor="let question of quiz.questions; let i = index"
                    [attr.data-index]="i">{{question.question}}<span
@@ -64,16 +67,16 @@
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th class="center" mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
           <td mat-cell *matCellDef="let quiz" class="width-10">
             <div class="questions-action-icons">
               <button mat-button (click)="switchState('editQuiz');editQuiz(quiz);"
-                      style="min-width: 30px;width: 44px;padding: 0;">
+                      style="min-width: 30px;width: 44px;padding: 0;color: #2F3139;">
                 <mat-icon>edit</mat-icon>
               </button>
 
               <button mat-button (click)="deleteQuiz(quiz._id)"
-                      style="min-width: 30px;width: 44px;padding: 0;">
+                      style="min-width: 30px;width: 44px;padding: 0;color: #2F3139;">
                 <mat-icon>close</mat-icon>
               </button>
             </div>
@@ -191,7 +194,7 @@
       <div style="display: inline-block;width:35%;"></div>
       <div style="display: inline-block;width:30%;text-align: left;min-width: 200px;">
         <button mat-button (click)="addOption()"
-                style="height: 50px;font-size: 15px;margin-left: 12px;color: #E74C3C;">
+                style="height: 50px;font-size: 15px;margin-left: 12px;color: #2B2B2B;">
           ADD OPTION
         </button>
       </div>
@@ -200,7 +203,7 @@
 
     <div style="width: 100%">
       <div style="text-align: center;">
-        <button style="background-color: #E74C3C;color: white;width: 130px;margin-top: 10px;height: 44px;"
+        <button style="width: 130px;margin-top: 10px;height: 44px;background-color: #2F3139;color: #259FD9;"
                 mat-button type="submit"
                 (click)="submitNewQuestion();">
           <label class="button-label">Submit</label>
@@ -213,7 +216,8 @@
   <div *ngIf="state === 'addQuiz' || state === 'editQuiz'">
     <div class="controls">
       <div>
-        <button style="height: 40px;line-height: 1.5;display: inline-block;vertical-align: middle;background-color: #E74C3C;color: white;width: 130px;float: left;margin-top: 5px;margin-left: 10px;"
+        <button
+          style="height: 40px;line-height: 1.5;display: inline-block;vertical-align: middle;background-color: #2F3139;color: #259FD9;width: 130px;float: left;margin-top: 5px;margin-left: 10px;"
           mat-button (click)="switchState('getQuizzes');">
           <label class="button-label">Back</label>
         </button>
@@ -252,7 +256,7 @@
 
     <div style="width: 100%">
       <div style="text-align: center;">
-        <button style="background-color: #E74C3C;color: white;width: 130px;margin-top: 10px;height: 44px;"
+        <button style="background-color: #2F3139;color: #259FD9;width: 130px;margin-top: 10px;height: 44px;"
                 mat-button type="submit"
                 (click)="createQuiz();">
           <label class="button-label">Submit</label>

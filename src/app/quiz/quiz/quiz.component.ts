@@ -24,11 +24,6 @@ export class QuizComponent implements OnInit {
     this.getQuizAll();
   }
 
-  printSelected(q) {
-    console.log('q.correctAnswer : ', q.correctAnswer);
-    console.log('q.givenAnswer : ', q.givenAnswer);
-  }
-
   switchState(s) {
     this.state = s;
   }
@@ -48,7 +43,6 @@ export class QuizComponent implements OnInit {
     this.mode = 'default';
     this.state = 'takeQuiz';
     this.currentQuiz = quiz;
-    console.log('this.currentQuiz : ', this.currentQuiz);
   }
 
   restartQuiz() {
@@ -74,27 +68,13 @@ export class QuizComponent implements OnInit {
 
       if (this.currentQuiz.questions[i].correctAnswer === this.currentQuiz.questions[i].givenAnswer) {
         this.score += 1;
-        // console.log('this.score  :  ', this.score, typeof this.score);
       }
       if (i === this.currentQuiz.questions.length - 1) {
         this.currentCounter.count += 1;
-        this.currentCounter.total += this.score / this.currentQuiz.questions.length;
-
-        const counterString = this.currentCounter.total.toString();
-
-        counterString.slice(0, (counterString.indexOf('.')) + 3);
-        this.currentCounter.total = parseInt(counterString, 10);
-        // num = num.toString(); //If it's not already a String
-        // num = num.slice(0, (num.indexOf("."))+3); //With 3 exposing the hundredths place
-        // Number(num);
-
-
-        // console.log('this.currentCounter.count : ', this.currentCounter.count, typeof this.currentCounter.count);
-        console.log('this.currentCounter.total : ', this.currentCounter.total, typeof this.currentCounter.total);
+        this.currentCounter.total += Math.ceil((this.score / this.currentQuiz.questions.length) * 100);
         this.dataService.updateCount(this.currentCounter)
           .subscribe(
             res => {
-              console.log('response of updated counter : ', res);
             }
           );
       }

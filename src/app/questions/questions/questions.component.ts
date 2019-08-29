@@ -133,12 +133,9 @@ export class QuestionsComponent implements OnInit {
   getQuizzes(pageIndex, limit) {
     this.dataService.getQuizzes(pageIndex, limit)
       .subscribe(result => {
-        console.log('result  get quizzes: ', result);
-        console.log('res.res: ', result.result);
         this.quizzes = result.result;
         this.quizDataSource = new MatTableDataSource(result.result);
         this.initPaginator(result.pagination.page, result.pagination.limit, result.pagination.total);
-        console.log('this.quizzes : ', this.quizzes);
       });
   }
 
@@ -148,7 +145,6 @@ export class QuestionsComponent implements OnInit {
         this.questions = result.docs;
         this.questionDataSource = new MatTableDataSource(result.docs);
         this.initPaginator(result.pagination.page, result.pagination.limit, result.pagination.total);
-        console.log('this.questions : ', this.questions);
       });
   }
 
@@ -156,7 +152,6 @@ export class QuestionsComponent implements OnInit {
     for (let i = 0; i < this.newQuestion.options.length; i++) {
       this.newQuestion.options[i].label = this.allOptions[i];
     }
-    console.log('this.newQuestion submit: ', this.newQuestion);
     for (let i = 0; i < this.newQuestion.options.length; i++) {
       if (this.newQuestion.options[i].name === '') {
         alert('Please fill out all the options!');
@@ -164,8 +159,6 @@ export class QuestionsComponent implements OnInit {
       }
 
       if (i === this.newQuestion.options.length - 1) {
-        console.log('this.newQuestion : ', this.newQuestion);
-        console.log('this.state : ', this.state);
         if (this.newQuestion.question === ''
           || this.newQuestion.options.length === 0
           || this.newQuestion.givenAnswer === 0) {
@@ -176,7 +169,6 @@ export class QuestionsComponent implements OnInit {
             this.dataService.createQuestion(this.newQuestion)
               .subscribe(result => {
                 if (result) {
-                  console.log('result : ', result);
                   this.initQuestionsData();
                 }
               }, err => {
@@ -187,7 +179,6 @@ export class QuestionsComponent implements OnInit {
             this.dataService.updateQuestion(this.newQuestion)
               .subscribe(result => {
                 if (result) {
-                  console.log('result edit successful : ', result);
                   this.initQuestionsData();
                 }
               }, err => {
@@ -213,11 +204,9 @@ export class QuestionsComponent implements OnInit {
             alert('An error occurred!');
           });
       } else if (this.state === 'editQuiz') {
-        console.log('This.newQuiz : ', this.newQuiz);
 
         this.dataService.updateQuiz(this.newQuiz)
           .subscribe(result => {
-            console.log('result updaetd QUIZ : ', result);
             this.initQuizData();
           }, err => {
             alert('An error occurred!');
@@ -228,24 +217,15 @@ export class QuestionsComponent implements OnInit {
 
   switchTab(clickedTab) {
     if (clickedTab === 'quizTab') {
-      this.quizTab = 'tab-active';
-      this.questionsTab = 'tab-inactive';
       this.state = 'getQuizzes';
-      this.questionsLabel = 'tab-label-active';
-      this.quizLabel = 'tab-label-inactive';
       this.getQuizzes(0, 10);
     } else if (clickedTab === 'questionsTab') {
-      this.quizTab = 'tab-inactive';
-      this.questionsTab = 'tab-active';
-      this.questionsLabel = 'tab-label-active';
-      this.quizLabel = 'tab-label-inactive';
       this.state = 'getQuestions';
       this.getQuestions(0, 10);
     }
   }
 
   deleteQuestion(questionId) {
-    console.log('questionId : ', questionId);
     if (confirm('Are you sure you want to delete ?')) {
       this.dataService.deleteQuestion(questionId)
         .subscribe(result => {
@@ -259,7 +239,6 @@ export class QuestionsComponent implements OnInit {
   }
 
   deleteQuiz(quizId) {
-    console.log('quizId : ', quizId);
     if (confirm('Are you sure you want to delete ?')) {
       this.dataService.deleteQuiz(quizId)
         .subscribe(result => {
@@ -301,23 +280,19 @@ export class QuestionsComponent implements OnInit {
     for (let i = 0; i < selected.length; i++) {
       for (let j = 0; j < this.questions.length; j++) {
         if (selected[i]._id === this.questions[j]._id) {
-          console.log('this.newQuiz.questions : ', this.newQuiz.questions);
           this.newQuiz.questions.push(this.questions[j]);
         }
       }
 
     }
-    console.log('this.newQuiz : ', this.newQuiz);
   }
 
   selectAllQuestions() {
     this.newQuiz.questions = this.questions;
-    console.log('this.newQuiz.questions : ', this.newQuiz.questions);
   }
 
   deselectAllQuestions() {
     this.newQuiz.questions = [];
-    console.log('this.newQuiz.questions : ', this.newQuiz.questions);
   }
 
   deleteOption(optionForDelete, itemIndex) {

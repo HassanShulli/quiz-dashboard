@@ -22,7 +22,8 @@ import {
   MatToolbarModule,
   MatGridListModule,
   MatDialogModule,
-  MatCardModule
+  MatCardModule,
+  MatButtonToggleModule
 } from '@angular/material';
 import {LayoutModule} from '@angular/cdk/layout';
 import {ChartsModule} from 'ng2-charts';
@@ -55,25 +56,27 @@ import { MainNavComponent } from './main-nav/main-nav.component';
     LayoutModule,
     MatDialogModule,
     MatCardModule,
-    ChartsModule
+    ChartsModule,
+    MatButtonModule
   ],
-  exports: [
-    MatButtonModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatPaginatorModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatDialogModule,
-    MatCardModule,
-    ChartsModule
-  ],
+  // exports: [
+  //   MatButtonModule,
+  //   MatCheckboxModule,
+  //   MatIconModule,
+  //   MatInputModule,
+  //   MatListModule,
+  //   MatPaginatorModule,
+  //   MatRadioModule,
+  //   MatSelectModule,
+  //   MatSidenavModule,
+  //   MatTableModule,
+  //   MatTabsModule,
+  //   MatToolbarModule,
+  //   MatDialogModule,
+  //   MatCardModule,
+  //   ChartsModule,
+  //   MatButtonModule
+  // ],
   providers: [],
   bootstrap: [AppComponent]
 })
